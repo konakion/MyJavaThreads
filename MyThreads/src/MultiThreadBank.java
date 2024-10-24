@@ -6,7 +6,7 @@ public class MultiThreadBank {
         public synchronized void deposit(int amount) {balance += amount; }
     }
 
-    static class Customer extends Thread{
+    static class Customer implements Runnable {
         private BankAccount account;
         private int amount;
         public Customer(BankAccount a, int d) { account = a; amount = d; }
@@ -17,8 +17,8 @@ public class MultiThreadBank {
 
     public static void main(String[] args)  throws InterruptedException {
         BankAccount a = new BankAccount(1000);
-        Thread kunde1 = new Customer(a, +10);
-        Thread kunde2 = new Customer(a, -10);
+        Thread kunde1 = new Thread(new Customer(a, +10));
+        Thread kunde2 = new Thread(new Customer(a, -10));
         kunde1.start(); kunde2.start();
         kunde1.join(); kunde2.join();
         System.out.println(a.getBalance());

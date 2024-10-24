@@ -2,7 +2,7 @@ public class ParallelQuickSort {
     
     public static void sort(int[] a) {
         int maxDepth = 2;  // maximale Rekursionstiefe für paralleles Sortieren
-        Thread sortThread = new QuickSortThread(a, 0, a.length - 1, maxDepth);
+        Thread sortThread = new Thread(new QuickSortThread(a, 0, a.length - 1, maxDepth));
         sortThread.start();
         try {
             sortThread.join();  // Warten, bis der Thread fertig ist
@@ -12,7 +12,7 @@ public class ParallelQuickSort {
     }
 
     // Thread-Klasse für paralleles QuickSort
-    static class QuickSortThread extends Thread {
+    static class QuickSortThread implements Runnable {
         private int[] a;
         private int li;
         private int re;
@@ -40,12 +40,12 @@ public class ParallelQuickSort {
                 Thread tre = null;
                 
                 if (li < i - 1) {
-                    tli = new QuickSortThread(a, li, i - 1, maxDepth - 1);
+                    tli = new Thread(new QuickSortThread(a, li, i - 1, maxDepth - 1));
                     tli.start();
                 }
 
                 if (i + 1 < re) {
-                    tre = new QuickSortThread(a, i + 1, re, maxDepth - 1);
+                    tre = new Thread(new QuickSortThread(a, i + 1, re, maxDepth - 1));
                     tre.start();
                 }
 

@@ -4,7 +4,7 @@ public class MultiThreadExample {
         // Erstelle 5 Threads
         for (int i = 1; i <= 5; i++) {
             // Jeder Thread bekommt einen eindeutigen Namen, z.B. "Thread-1", "Thread-2", usw.
-            CountingThread thread = new CountingThread("Thread-" + i);
+            Thread thread = new Thread(new CountingThread("Thread-" + i));
             thread.start(); // Startet den Thread
         }
         System.out.println("Main ist fertig");
@@ -12,7 +12,7 @@ public class MultiThreadExample {
 }
 
 // Klasse, die von Thread erbt
-class CountingThread extends Thread {
+class CountingThread implements Runnable {
     private final String threadName;
 
     // Konstruktor für den Thread, um den Namen zu setzen
